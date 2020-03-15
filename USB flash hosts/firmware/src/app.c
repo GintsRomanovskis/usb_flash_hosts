@@ -78,6 +78,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 APP_DATA appData;
 SYS_TMR_HANDLE handle20ms, handle30ms;
+const uint8_t writeData[12]  __attribute__((aligned(16))) = "Hello World ";
+
 // *****************************************************************************
 // *****************************************************************************
 // Section: Application Callback Functions
@@ -105,7 +107,7 @@ void Test_Callback ( uintptr_t context, uint32_t currTick )
  * tracks the completion of the transfer. This flag is updated in the transfer
  * callback. */
 
-void _USB_HOST_SCSI_TransferCallback
+/*void _USB_HOST_SCSI_TransferCallback
 (
     USB_HOST_MSD_LUN_HANDLE lunHandle,
     USB_HOST_MSD_TRANSFER_HANDLE transferHandle,
@@ -119,28 +121,28 @@ void _USB_HOST_SCSI_TransferCallback
     USB_HOST_SCSI_COMMAND_OBJ * commandObj;
     USB_HOST_SCSI_EVENT event;
 
-    /* Get the SCSI object index from the lunHandle */
+    // Get the SCSI object index from the lunHandle 
     scsiObjIndex = _USB_HOST_SCSI_LUNHandleToSCSIInstance(lunHandle);
 
-    /* Get the pointer to the SCSI object */
+    // Get the pointer to the SCSI object 
     scsiObj = &gUSBHostSCSIObj[scsiObjIndex];
 
-    /* Pointer to the command object */
+     //Pointer to the command object 
     commandObj = &scsiObj->commandObj;
 
-    /* The processed size */
+    // The processed size 
     commandObj->size = size;
 
-    /* The result of the command */
+    // The result of the command 
     commandObj->result = result;
 
-    /* Let the main state machine know that the command is completed */
+    // Let the main state machine know that the command is completed 
     commandObj->commandCompleted = true;
 
-    /* The rest of code is not shown here for the sake of brevity */
+     //The rest of code is not shown here for the sake of brevity 
 }
 
-
+*/
 
 // *****************************************************************************
 // *****************************************************************************
@@ -171,11 +173,31 @@ void APP_Initialize ( void )
 {
     /* Place the App state machine in its initial state. */
     appData.state = APP_STATE_INIT;
+    appData.deviceIsConnected = false;
 
     
     /* TODO: Initialize your application's state machine and other
      * parameters.
      */
+}
+//eventhandleris - atkariibaa no staavokla
+//atziimee vai failsisteemai ir piemonteeta vai nee. . 
+void APP_SYSFSEventHandler(SYS_FS_EVENT event, void * eventData, uintptr_t context)
+{
+    switch(event)
+    {
+        case SYS_FS_EVENT_MOUNT:
+            appData.deviceIsConnected = true;
+            break;
+            
+        case SYS_FS_EVENT_UNMOUNT:
+            appData.deviceIsConnected = false;
+            
+            break;
+            
+        default:
+            break;
+    }
 }
 
 
@@ -199,24 +221,76 @@ void APP_Tasks ( void )
             bool appInitialized = true;
             handle20ms = SYS_TMR_CallbackPeriodic ( 1000, 1, Test_Callback );
             handle30ms = SYS_TMR_CallbackPeriodic ( 2000, 2, Test_Callback );
-        
+            //inicializee event handleri.
+            SYS_FS_EventHandlerSet(APP_SYSFSEventHandler, (uintptr_t)NULL);
             if (appInitialized)
             {
-            
-                appData.state = APP_STATE_SERVICE_TASKS;
+                //pagaidaam sheit lai ir shaadi
+                appData.state = APP_OPEN_FILE;
             }
             break;
         }
+        //
+        //sheit naaks viss kas saistiits ar usb pievienoshanu. 
+        //
+        //atveram failu, kuru rakstiit uz USB. Pagaidaam bez usb. 
+        case APP_OPEN_FILE:
+           
+              appData.fileHandle = SYS_FS_FileOpen("/mnt/myDrive/simpleText.txt",(SYS_FS_FILE_OPEN_APPEND_PLUS));
+            if(appData.fileHandle == SYS_FS_HANDLE_INVALID)
+            {
+                /* Could not open the file. Error out*/
+                appData.state = APP_ERROR;
+            }
+            else
+            {
+              
+                    /* Check the file to be read */
+                    /* File opened successfully. Write to file */
+                appData.state = APP_STATE_WRITE_TO_FILE;
 
-        case APP_STATE_SERVICE_TASKS:
-        {
-        
+            }
             break;
-        }
+//raksta failu uz failsisteemu. 
+        case APP_STATE_WRITE_TO_FILE:
 
-        /* TODO: implement your application state machine.*/
+            /* Try writing to the file */
+            if (SYS_FS_FileWrite( appData.fileHandle, (const void *) writeData, 12 ) == -1)
+            {
+                /* Write was not successful. Close the file
+                 * and error out.*/
+                SYS_FS_FileClose(appData.fileHandle);
+                appData.state = APP_ERROR;
+
+            }
+            else
+            {
+                /* We are done writing. Close the file */
+                appData.state = APP_STATE_CLOSE_FILE;
+            }
+
+            break;
+//aizver failu 
+        case APP_STATE_CLOSE_FILE:
+
+            /* Close the file */
+            SYS_FS_FileClose(appData.fileHandle);
+
+            /* The test was successful. Lets idle. */
+            appData.state = APP_STATE_END_IDLE;
+            break;
+
+        case APP_STATE_END_IDLE:
+            printf("Success! ");
+            BSP_LED_1On();
+            break;       
         
-
+        case APP_ERROR:
+            /* The application comes here when the demonstration
+               has failed. */
+            //Iesleedz tresho LED uz plates. 
+            BSP_LED_3On();
+            break;
         /* The default state should never be executed. */
         default:
         {
@@ -225,20 +299,21 @@ void APP_Tasks ( void )
         }
     }
 }
+//kods nepilniigs un visticamaak pilniigi nevajadziigs. 
 
-void USB_HOST_SCSI_Tasks(USB_HOST_MSD_LUN_HANDLE lunHandle)
+/*void USB_HOST_SCSI_Tasks(USB_HOST_MSD_LUN_HANDLE lunHandle)
 {
     switch(scsiObj->state)
     {
-        /* For the sake of brevity, only one SCSI command is show here */
+       // For the sake of brevity, only one SCSI command is show here 
         case USB_HOST_SCSI_STATE_INQUIRY_RESPONSE:
 
-            /* We get the SCSI Enquiry response. Although there isn't much
-             * that we can do with this data */
+            // We get the SCSI Enquiry response. Although there isn't much
+            // that we can do with this data 
             _USB_HOST_SCSI_InquiryResponseCommand(scsiObj->commandObj.cdb);
 
-            /* The commandCompleted flag will be updated in the callback.
-             * Update the state and send the command.   */
+            // The commandCompleted flag will be updated in the callback.
+             //Update the state and send the command.   
             scsiObj->commandObj.inUse = true;
             scsiObj->commandObj.commandCompleted = false;
             scsiObj->commandObj.generateEvent = false;
@@ -259,7 +334,7 @@ void USB_HOST_SCSI_Tasks(USB_HOST_MSD_LUN_HANDLE lunHandle)
             break;
 
     }
-}  
+}  */ 
 
 /*******************************************************************************
  End of File
