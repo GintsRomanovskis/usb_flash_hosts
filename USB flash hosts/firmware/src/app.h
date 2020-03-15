@@ -88,7 +88,14 @@ typedef enum
 {
 	/* Application's state machine's initial state. */
 	APP_STATE_INIT=0,
-	APP_STATE_SERVICE_TASKS,
+    APP_STATE_MOUNT_DISK,
+    APP_STATE_UNMOUNT_DISK,
+    APP_OPEN_FILE,
+    APP_STATE_WRITE_TO_FILE,
+    APP_STATE_CLOSE_FILE,
+    APP_ERROR,
+    APP_STATE_END_IDLE
+            
 
 	/* TODO: Define states used by the application state machine. */
 
@@ -113,7 +120,19 @@ typedef struct
     /* The application's current state */
     APP_STATES state;
 
-    /* TODO: Define any additional data used by the application. */
+      /* SYS_FS File handle for 1st file */
+    SYS_FS_HANDLE fileHandle;
+
+    /* Application data buffer */
+    uint8_t data[1024];
+
+    /* Number of bytes written */
+    uint32_t nBytesWritten;
+
+    /* Number of bytes read */
+    uint32_t nBytesRead;
+
+    bool deviceIsConnected;
 
 } APP_DATA;
 

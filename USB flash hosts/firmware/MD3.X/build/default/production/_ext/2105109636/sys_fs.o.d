@@ -1,5 +1,6 @@
-build/default/production/_ext/822048611/sys_ports_static.o:  \
- ../src/system_config/default/framework/system/ports/src/sys_ports_static.c  \
+build/default/production/_ext/2105109636/sys_fs.o:  \
+ ../../../../../../../microchip/harmony/v2_06/framework/system/fs/src/dynamic/sys_fs.c  \
+ ../../../../../../../microchip/harmony/v2_06/framework/system/fs/src/sys_fs_local.h  \
  ../src/system_config/default/system_config.h  \
  ../src/system_config/default/bsp/bsp.h  \
  ../../../../../../../microchip/harmony/v2_06/framework/peripheral/ports/plib_ports.h  \
@@ -33,10 +34,13 @@ build/default/production/_ext/822048611/sys_ports_static.o:  \
  ../../../../../../../microchip/harmony/v2_06/framework/peripheral/ports/processor/../templates/ports_ChangeNoticeEdgeControl_Unsupported.h  \
  ../../../../../../../microchip/harmony/v2_06/framework/peripheral/ports/processor/../templates/ports_ChangeNoticeEdgeStatus_Unsupported.h  \
  ../../../../../../../microchip/harmony/v2_06/framework/peripheral/ports/plib_ports_compatibility.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/system/ports/sys_ports.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/system/ports/sys_ports_definitions.h  \
+ ../../../../../../../microchip/harmony/v2_06/framework/system/system.h  \
  ../../../../../../../microchip/harmony/v2_06/framework/system/common/sys_common.h  \
  ../../../../../../../microchip/harmony/v2_06/framework/system/common/sys_module.h  \
+ ../../../../../../../microchip/harmony/v2_06/framework/system/fs/sys_fs.h  \
+ ../../../../../../../microchip/harmony/v2_06/framework/system/fs/fat_fs/src/file_system/ff.h  \
+ ../../../../../../../microchip/harmony/v2_06/framework/system/fs/fat_fs/src/file_system/ffconf.h  \
+ ../../../../../../../microchip/harmony/v2_06/framework/system/fs/src/sys_fs_media_manager_local.h  \
  ../../../../../../../microchip/harmony/v2_06/framework/system/int/sys_int.h  \
  ../../../../../../../microchip/harmony/v2_06/framework/peripheral/int/plib_int.h  \
  ../../../../../../../microchip/harmony/v2_06/framework/peripheral/int/processor/int_processor.h  \
@@ -59,22 +63,9 @@ build/default/production/_ext/822048611/sys_ports_static.o:  \
  ../../../../../../../microchip/harmony/v2_06/framework/peripheral/int/processor/../templates/int_VariableOffset_Unsupported.h  \
  ../../../../../../../microchip/harmony/v2_06/framework/peripheral/int/processor/../templates/int_SoftwareNMI_Unsupported.h  \
  ../../../../../../../microchip/harmony/v2_06/framework/system/int/sys_int_mapping.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/plib_devcon.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/devcon_processor.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/devcon_p32xxxx.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/devcon_p32mx795f512l.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_AlternateClock_Unsupported.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_DeviceRegsLockUnlock_Unsupported.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_OTPConfigLockUnlock_Unsupported.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_USB_PHY_SleepModeSet_Unsupported.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_ECCModes_Unsupported.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_JTAGEnable_Default_1.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_AnalogChargePumpControl_Unsupported.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_TraceOutput_Default_1.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_JTAGUsesTDO_Default_1.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_IgnoreDebugFreeze_Unsupported.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_DeviceVerAndId_Default.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_SysLockUnlock_Default.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_MPLL_Unsupported.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_HSUARTControl_Unsupported.h  \
- ../../../../../../../microchip/harmony/v2_06/framework/peripheral/devcon/processor/../templates/devcon_BootSelection_Unsupported.h 
+ ../../../../../../../microchip/harmony/v2_06/framework/system/fs/sys_fs_media_manager.h  \
+ ../../../../../../../microchip/harmony/v2_06/framework/driver/driver_common.h  \
+ ../../../../../../../microchip/harmony/v2_06/framework/system/fs/fat_fs/src/hardware_access/diskio.h  \
+ ../../../../../../../microchip/harmony/v2_06/framework/osal/osal.h  \
+ ../../../../../../../microchip/harmony/v2_06/framework/osal/osal_definitions.h  \
+ ../../../../../../../microchip/harmony/v2_06/framework/osal/osal_impl_basic.h 

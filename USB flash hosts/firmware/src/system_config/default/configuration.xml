@@ -5,7 +5,7 @@
     <SystemStartScript dnOrder="1"/>
   </DisplayManager>
   <General>
-    <HarmonyPath dnOrder="0" path="../.."/>
+    <HarmonyPath dnOrder="0" path="../../../../../microchip/harmony/v2_06"/>
     <Processor dnOrder="1" name="PIC32MX795F512L"/>
     <Board dnOrder="2" name="PIC32MX Ethernet Starter Kit"/>
     <ForceOptimization dnOrder="3" flag="true"/>
@@ -382,16 +382,16 @@
     </Templates>
     <CompilerItems dnOrder="2">
       <C32 dnOrder="0">
-        <Include dnOrder="0" value="C:\microchip\harmony\v2_06\apps\MD3\firmware\src"/>
-        <Include dnOrder="1" value="C:\microchip\harmony\v2_06\apps\MD3\firmware\src\system_config\default"/>
-        <Include dnOrder="2" value="C:\microchip\harmony\v2_06\apps\MD3\firmware\src\default"/>
+        <Include dnOrder="0" value="C:\Users\Booo_kat\MPLABXProjects\usb_flash_hosts\USB flash hosts\firmware\src"/>
+        <Include dnOrder="1" value="C:\Users\Booo_kat\MPLABXProjects\usb_flash_hosts\USB flash hosts\firmware\src\system_config\default"/>
+        <Include dnOrder="2" value="C:\Users\Booo_kat\MPLABXProjects\usb_flash_hosts\USB flash hosts\firmware\src\default"/>
         <Include dnOrder="3" value="C:\microchip\harmony\v2_06\framework"/>
-        <Include dnOrder="4" value="C:\microchip\harmony\v2_06\apps\MD3\firmware\src\system_config\default\framework"/>
+        <Include dnOrder="4" value="C:\Users\Booo_kat\MPLABXProjects\usb_flash_hosts\USB flash hosts\firmware\src\system_config\default\framework"/>
         <Include dnOrder="5" value="../src/system_config/default/bsp"/>
       </C32>
     </CompilerItems>
     <Libraries dnOrder="3">
-      <Library dnOrder="0" value="../../../../bin/framework/peripheral/PIC32MX795F512L_peripherals.a"/>
+      <Library dnOrder="0" value="../../../../../../../microchip/harmony/v2_06/bin/framework/peripheral/PIC32MX795F512L_peripherals.a"/>
     </Libraries>
   </Manifest>
 </Configuration>
