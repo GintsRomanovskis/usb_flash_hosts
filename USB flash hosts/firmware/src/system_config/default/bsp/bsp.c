@@ -49,6 +49,64 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "bsp.h"
 
+
+// *****************************************************************************
+/* Data Structure: 
+    switch_port_channel_map[]
+
+  Summary:
+    Maps each switch to its port channel
+  
+  Description:
+    The switch_port_channel_map array, indexed by BSP_SWITCH, maps each switch 
+    to its port channel.
+
+  Remarks:
+    Refer to bsp.h for usage information.
+*/
+static const PORTS_CHANNEL switch_port_channel_map[] =
+{
+    PORT_CHANNEL_F
+};
+
+// *****************************************************************************
+/* Data Structure: 
+    switch_port_bit_pos_map[]
+
+  Summary:
+    Maps each switch to its port bit position
+  
+  Description:
+    The switch_port_bit_pos_map array, indexed by BSP_SWITCH, maps each switch to its port bit position
+
+  Remarks:
+    Refer to bsp.h for usage information.
+*/
+static const PORTS_BIT_POS switch_port_bit_pos_map[] =
+{
+    PORTS_BIT_POS_3
+};
+
+
+// *****************************************************************************
+/* Function: 
+    void BSP_SwitchStateGet(BSP_SWITCH switch);
+
+  Summary:
+    Returns the present state (pressed or not pressed) of the specified switch.
+  
+  Description:
+    This function returns the present state (pressed or not pressed) of the
+    specified switch.
+
+  Remarks:
+    Refer to bsp.h for usage information.
+*/
+
+BSP_SWITCH_STATE BSP_SwitchStateGet( BSP_SWITCH bspSwitch )
+{
+    return ( PLIB_PORTS_PinGet(PORTS_ID_0, switch_port_channel_map[bspSwitch], switch_port_bit_pos_map[bspSwitch]) );
+}
 // *****************************************************************************
 /* Function: 
     void BSP_USBVBUSSwitchStateSet(BSP_USB_VBUS_SWITCH_STATE state);

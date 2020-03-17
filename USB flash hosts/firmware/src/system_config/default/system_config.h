@@ -137,7 +137,7 @@ extern "C" {
 #define SYS_FS_CWD_STRING_LEN 1024
 
 
-#define SYS_FS_MEDIA_TYPE_IDX0 				SYS_FS_MEDIA_TYPE_SD_CARD
+#define SYS_FS_MEDIA_TYPE_IDX0 				SYS_FS_MEDIA_TYPE_SPIFLASH
 #define SYS_FS_TYPE_IDX0 					FAT
 
 
@@ -148,7 +148,7 @@ extern "C" {
 
 
 #define SYS_FS_MEDIA_IDX0_MOUNT_NAME_VOLUME_IDX0 			"/mnt/myDrive1"
-#define SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0 			"/dev/mmcblka1"
+#define SYS_FS_MEDIA_IDX0_DEVICE_NAME_VOLUME_IDX0 			"/dev/mtda1"
 
 
 /*** Interrupt System Service Configuration ***/
@@ -277,6 +277,9 @@ extern "C" {
 // *****************************************************************************
 // *****************************************************************************
 /*** Application Defined Pins ***/
+
+/*** Functions for USBID pin ***/
+#define USBIDStateGet() PLIB_PORTS_PinGet(PORTS_ID_0, PORT_CHANNEL_F, PORTS_BIT_POS_3)
 
 /*** Functions for BSP_LED_1 pin ***/
 #define BSP_LED_1Toggle() PLIB_PORTS_PinToggle(PORTS_ID_0, PORT_CHANNEL_D, PORTS_BIT_POS_0)

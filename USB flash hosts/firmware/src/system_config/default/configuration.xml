@@ -324,7 +324,7 @@
       <Template dnOrder="7">
         <Name dnOrder="0">bsp.c</Name>
         <Path dnOrder="1">Source&amp;#160;Files/app/system_config/default/bsp</Path>
-        <Checksum dnOrder="2">B65380560CCD171A17AEE99505062504</Checksum>
+        <Checksum dnOrder="2">C0834E489A3036D4A7FDF35B18949FDF</Checksum>
       </Template>
       <Template dnOrder="8">
         <Name dnOrder="0">app.c</Name>
@@ -348,7 +348,7 @@
       <Template dnOrder="12">
         <Name dnOrder="0">bsp.h</Name>
         <Path dnOrder="1">Header&amp;#160;Files/app/system_config/default/bsp</Path>
-        <Checksum dnOrder="2">942375309532A5ABB761C41E7193B6FD</Checksum>
+        <Checksum dnOrder="2">45133FF41C586A0150A903C0D80E4318</Checksum>
       </Template>
       <Template dnOrder="13">
         <Name dnOrder="0">system_tasks.c</Name>
@@ -363,7 +363,7 @@
       <Template dnOrder="15">
         <Name dnOrder="0">system_config.h</Name>
         <Path dnOrder="1">Header&amp;#160;Files/app/system_config/default</Path>
-        <Checksum dnOrder="2">6513280E8A48517E218406647C37971E</Checksum>
+        <Checksum dnOrder="2">9E757D9EB609FF4535F2A5381F36F5AD</Checksum>
       </Template>
       <Template dnOrder="16">
         <Name dnOrder="0">app.h</Name>

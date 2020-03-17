@@ -236,7 +236,7 @@ void APP_Tasks ( void )
         //atveram failu, kuru rakstiit uz USB. Pagaidaam bez usb. 
         case APP_OPEN_FILE:
            
-              appData.fileHandle = SYS_FS_FileOpen("/mnt/myDrive/simpleText.txt",(SYS_FS_FILE_OPEN_APPEND_PLUS));
+              appData.fileHandle = SYS_FS_FileOpen("/mnt/myDrive1/simpleText.txt",(SYS_FS_FILE_OPEN_APPEND_PLUS));
             if(appData.fileHandle == SYS_FS_HANDLE_INVALID)
             {
                 /* Could not open the file. Error out*/
