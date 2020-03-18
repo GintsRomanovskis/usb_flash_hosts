@@ -199,6 +199,21 @@ void APP_SYSFSEventHandler(SYS_FS_EVENT event, void * eventData, uintptr_t conte
             break;
     }
 }
+//usb host eventhandler
+USB_HOST_EVENT_RESPONSE APP_USBHostEventHandler (USB_HOST_EVENT event, void * eventData, uintptr_t context)
+{
+    switch (event)
+    {
+        case USB_HOST_EVENT_DEVICE_UNSUPPORTED:
+            break;
+        default:
+            break;
+                    
+    }
+    
+    return(USB_HOST_EVENT_RESPONSE_NONE);
+}
+
 
 
 /******************************************************************************
@@ -211,7 +226,12 @@ void APP_SYSFSEventHandler(SYS_FS_EVENT event, void * eventData, uintptr_t conte
 
 void APP_Tasks ( void )
 {
-
+        //LED tiek sl?gti sekojoshi:
+        
+        //LED1 - On - Pievienota ieriice
+        //LED2 - On - Gaidiishanas rezhiims 
+        //LED3 - On - ERROR
+        //Visi LED - Off - nav piesleegts USB Flash
     /* Check the application's current state. */
     switch ( appData.state )
     {
@@ -219,17 +239,43 @@ void APP_Tasks ( void )
         case APP_STATE_INIT:
         {
             bool appInitialized = true;
-            handle20ms = SYS_TMR_CallbackPeriodic ( 1000, 1, Test_Callback );
-            handle30ms = SYS_TMR_CallbackPeriodic ( 2000, 2, Test_Callback );
+           // handle20ms = SYS_TMR_CallbackPeriodic ( 1000, 1, Test_Callback );
+           // handle30ms = SYS_TMR_CallbackPeriodic ( 2000, 2, Test_Callback );
+            //izsleedz visus LED
+            BSP_LED_1Off();
+            BSP_LED_2Off();
+            BSP_LED_3Off();
+            
             //inicializee event handleri.
             SYS_FS_EventHandlerSet(APP_SYSFSEventHandler, (uintptr_t)NULL);
             if (appInitialized)
             {
                 //pagaidaam sheit lai ir shaadi
-                appData.state = APP_OPEN_FILE;
+                appData.state = APP_STATE_USB;
             }
             break;
-        }
+        }//inicializee USB hostu 
+        case APP_STATE_USB:
+            USB_HOST_EventHandlerSet(APP_USBHostEventHandler, 0);
+            USB_HOST_BusEnable(0);
+               if(USB_HOST_BusIsEnabled(0))
+            {
+                appData.state = APP_WAIT_FOR_DEVICE_ATTACH;
+            }
+            break;
+            //gaida liidz tiks pievienota ieriice
+        case APP_WAIT_FOR_DEVICE_ATTACH:
+
+         //kad ieriice pievienota, paarsleedzas uz naakamo staavokli APP_OPEN_FILE
+            if(appData.deviceIsConnected)
+            {
+                BSP_LED_1On();//iesleedz 1.LED
+                BSP_LED_2Off();//izsleedz 2.diodi. 
+                appData.state = APP_OPEN_FILE;
+            }
+
+            break;
+            
         //
         //sheit naaks viss kas saistiits ar usb pievienoshanu. 
         //
@@ -239,14 +285,13 @@ void APP_Tasks ( void )
               appData.fileHandle = SYS_FS_FileOpen("/mnt/myDrive1/simpleText.txt",(SYS_FS_FILE_OPEN_APPEND_PLUS));
             if(appData.fileHandle == SYS_FS_HANDLE_INVALID)
             {
-                /* Could not open the file. Error out*/
+                //ja failu nevar atveert , atgriezh kljuudu
                 appData.state = APP_ERROR;
             }
             else
             {
               
-                    /* Check the file to be read */
-                    /* File opened successfully. Write to file */
+                    //ja failu var atveert, paariet uz rakstiishanu
                 appData.state = APP_STATE_WRITE_TO_FILE;
 
             }
@@ -254,18 +299,17 @@ void APP_Tasks ( void )
 //raksta failu uz failsisteemu. 
         case APP_STATE_WRITE_TO_FILE:
 
-            /* Try writing to the file */
+            
             if (SYS_FS_FileWrite( appData.fileHandle, (const void *) writeData, 12 ) == -1)
             {
-                /* Write was not successful. Close the file
-                 * and error out.*/
+                //neizdodas rakstiit uz failu, atgriezh kljuudu
                 SYS_FS_FileClose(appData.fileHandle);
                 appData.state = APP_ERROR;
 
             }
             else
             {
-                /* We are done writing. Close the file */
+                //ja izdodads ierakstiit, aizver failu
                 appData.state = APP_STATE_CLOSE_FILE;
             }
 
@@ -273,22 +317,27 @@ void APP_Tasks ( void )
 //aizver failu 
         case APP_STATE_CLOSE_FILE:
 
-            /* Close the file */
+            
             SYS_FS_FileClose(appData.fileHandle);
 
-            /* The test was successful. Lets idle. */
+            //paarsleedzas uz IDLE
             appData.state = APP_STATE_END_IDLE;
             break;
-
+            //gaidiishanas rezhiims
         case APP_STATE_END_IDLE:
             printf("Success! ");
-            BSP_LED_1On();
+            BSP_LED_2On();
+            BSP_LED_1Off();
+            if(appData.deviceIsConnected == false)
+            {
+                appData.state = APP_WAIT_FOR_DEVICE_ATTACH;
+                BSP_LED_2Off();
+            }
             break;       
         
         case APP_ERROR:
-            /* The application comes here when the demonstration
-               has failed. */
-            //Iesleedz tresho LED uz plates. 
+            
+            // kljuudas gadiijumaaIesleedz tresho LED uz plates. 
             BSP_LED_3On();
             break;
         /* The default state should never be executed. */
@@ -299,7 +348,7 @@ void APP_Tasks ( void )
         }
     }
 }
-//kods nepilniigs un visticamaak pilniigi nevajadziigs. 
+//zemaak esoshais kods nepilniigs un visticamaak pilniigi nevajadziigs. 
 
 /*void USB_HOST_SCSI_Tasks(USB_HOST_MSD_LUN_HANDLE lunHandle)
 {

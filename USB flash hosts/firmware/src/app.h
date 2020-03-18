@@ -94,7 +94,9 @@ typedef enum
     APP_STATE_WRITE_TO_FILE,
     APP_STATE_CLOSE_FILE,
     APP_ERROR,
-    APP_STATE_END_IDLE
+    APP_STATE_END_IDLE,
+    APP_STATE_USB,
+    APP_WAIT_FOR_DEVICE_ATTACH,
             
 
 	/* TODO: Define states used by the application state machine. */
