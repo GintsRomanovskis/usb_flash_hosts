@@ -181,7 +181,7 @@ void APP_Initialize ( void )
      */
 }
 //eventhandleris - atkariibaa no staavokla
-//atziimee vai failsisteemai ir piemonteeta vai nee. . 
+//atziimee vai failsisteemas ieriice ir piemonteeta vai nee. . 
 void APP_SYSFSEventHandler(SYS_FS_EVENT event, void * eventData, uintptr_t context)
 {
     switch(event)
