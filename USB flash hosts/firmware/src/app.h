@@ -59,14 +59,6 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include "system_config.h"
 #include "system_definitions.h"
 
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-extern "C" {
-
-#endif
-// DOM-IGNORE-END 
-
 // *****************************************************************************
 // *****************************************************************************
 // Section: Type Definitions
@@ -74,7 +66,7 @@ extern "C" {
 // *****************************************************************************
 
 // *****************************************************************************
-/* Application states
+/* Application States
 
   Summary:
     Application states enumeration
@@ -86,21 +78,17 @@ extern "C" {
 
 typedef enum
 {
-	/* Application's state machine's initial state. */
-	APP_STATE_INIT=0,
+	APP_STATE_BUS_ENABLE = 0,
+    APP_STATE_WAIT_FOR_BUS_ENABLE_COMPLETE,
+    APP_STATE_WAIT_FOR_DEVICE_ATTACH,
+    APP_STATE_DEVICE_CONNECTED,
     APP_STATE_MOUNT_DISK,
     APP_STATE_UNMOUNT_DISK,
-    APP_OPEN_FILE,
+    APP_STATE_OPEN_FILE,
     APP_STATE_WRITE_TO_FILE,
     APP_STATE_CLOSE_FILE,
-    APP_ERROR,
-    APP_STATE_END_IDLE,
-    APP_STATE_USB,
-    APP_WAIT_FOR_DEVICE_ATTACH,
-            
-
-	/* TODO: Define states used by the application state machine. */
-
+    APP_STATE_IDLE,
+    APP_STATE_ERROR
 } APP_STATES;
 
 
@@ -119,11 +107,13 @@ typedef enum
 
 typedef struct
 {
-    /* The application's current state */
-    APP_STATES state;
-
-      /* SYS_FS File handle for 1st file */
+ /* The application's current state */
+  
+    /* SYS_FS File handle for 1st file */
     SYS_FS_HANDLE fileHandle;
+
+    /* Application's current state */
+    APP_STATES state;
 
     /* Application data buffer */
     uint8_t data[1024];
@@ -135,7 +125,7 @@ typedef struct
     uint32_t nBytesRead;
 
     bool deviceIsConnected;
-
+    
 } APP_DATA;
 
 
@@ -146,6 +136,7 @@ typedef struct
 // *****************************************************************************
 /* These routines are called by drivers when certain events occur.
 */
+
 	
 // *****************************************************************************
 // *****************************************************************************
@@ -221,13 +212,6 @@ void APP_Tasks( void );
 
 
 #endif /* _APP_H */
-
-//DOM-IGNORE-BEGIN
-#ifdef __cplusplus
-}
-#endif
-//DOM-IGNORE-END
-
 /*******************************************************************************
  End of File
  */
