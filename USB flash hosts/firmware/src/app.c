@@ -146,7 +146,7 @@ void APP_Tasks(void) {
     switch (appData.state) {
         case APP_STATE_BUS_ENABLE:
 
-            /* Iestat?t notikumu apstr?d?t?ju un iesl?dz bus */
+            /* Iestatata notikumu apstradataju un iesledz bus */
             SYS_FS_EventHandlerSet(APP_SYSFSEventHandler, (uintptr_t) NULL);
             USB_HOST_EventHandlerSet(APP_USBHostEventHandler, 0);
             USB_HOST_BusEnable(0);
@@ -160,9 +160,9 @@ void APP_Tasks(void) {
             break;
 
         case APP_STATE_WAIT_FOR_DEVICE_ATTACH:
-            /* gaida ier?ces pievieno?anu. St?vok?a  tiks p?rvietots
-             * uz n?kamo st?vokli, kad pievieno?anas notikums
-             * ir sa?emts. */
+            /* gaida ierices pievienosanu. Stavokla  tiks parvietots
+             * uz nakamo stavokli, kad pievienosanas notikums
+             * ir sanemts. */
 
             if (appData.deviceIsConnected) {
                 BSP_LED_1On();
@@ -174,21 +174,21 @@ void APP_Tasks(void) {
 
         case APP_STATE_DEVICE_CONNECTED:
 
-            /*er?ce tika piesl?gta . M?s varam m??in?t uzst?d?t disku */
+            /*Ierice tika pieslegta . Mes varam meginat uzstadit disku */
             appData.state = APP_STATE_OPEN_FILE;
             break;
 
         case APP_STATE_OPEN_FILE:
 
-            /* m??iniet atv?rt failu pievieno?anai */
+            /* meginiet atvert failu pievienosanai */
 
             appData.fileHandle = SYS_FS_FileOpen("/mnt/myDrive1/file.txt", (SYS_FS_FILE_OPEN_APPEND_PLUS));
             if (appData.fileHandle == SYS_FS_HANDLE_INVALID) {
-                /* Failu nevar?ja atv?rt tiek uzst?d?ta k?uda*/
+                /* Failu nevareja atvert tiek uzstadita kluda*/
                 appData.state = APP_STATE_ERROR;
 
             } else {
-                /* Fails tika veiksm?gi atv?ts . Tiek p?riets uz  faila rakst??anu */
+                /* Fails tika veiksmigi atvets . Tiek pariets uz  faila rakstisanu */
                 appData.state = APP_STATE_WRITE_TO_FILE;
 
             }
@@ -196,15 +196,15 @@ void APP_Tasks(void) {
 
         case APP_STATE_WRITE_TO_FILE:
 
-            /* M??iniet rakst?t fail? */
+            /* Meginiet rakstit fail? */
             if (SYS_FS_FileWrite(appData.fileHandle, (const void *) writeData, 12) == -1) {
-                /* Rakst??ana nebija veiksm?ga. Aizv?rt failu
-                 * un izejo?? k??da.*/
+                /* Rakstisana nebija veiksmaga. Aizvert failu
+                 * un uzstada kludu.*/
                 SYS_FS_FileClose(appData.fileHandle);
                 appData.state = APP_STATE_ERROR;
 
             } else {
-                /* Rakst??ana bija veiksm?ga un pabeigta.Fails tiek aizv?rts */
+                /* Rakstisana bija veiksmiga un pabeigta.Fails tiek aizverts */
                 appData.state = APP_STATE_CLOSE_FILE;
             }
 
@@ -215,15 +215,15 @@ void APP_Tasks(void) {
             /* Aizver failu*/
             SYS_FS_FileClose(appData.fileHandle);
 
-            /* P?rbaude bija veiksm?ga. ?auj d?kst?v? */
+            /* Parbaude vai bija veiksmiga. Aiziet dikstave */
             appData.state = APP_STATE_IDLE;
             break;
 
         case APP_STATE_IDLE:
 
-            /* aplik?cija par?d?s ?eit, kad demonstr?cija ir pabeigta
-             * veiksm?gi. Tiek par?d?ts INDIKATORS . Gaid?t ier?ces atvieno?anu
-             * un, ja tas ir atvienots , pagaidiet, kam?r tas tiks  pievienots. */
+            /* aplikacija paradas seit, kad demonstracija ir pabeigta
+             * veiksmigi. Tiek paradits INDIKATORS . Gaidit ierices atvienosanu
+             * un, ja tas ir atvienots , pagaidiet, kamer tas tiks  pievienots. */
 
             BSP_LED_3Off();
             BSP_LED_2On();
@@ -235,16 +235,16 @@ void APP_Tasks(void) {
 
         case APP_STATE_ERROR:
 
-            /* Datb?bas tiek novirz?tas uz ?o bloku ja APP_STATE 
-             * sada?? izkrita ar k??du.*/
+            /* Datbibas tiek novirzitas uz so bloku ja APP_STATE 
+             * sadala izkrita ar kludu.*/
 
             BSP_LED_1On();
             if (SYS_FS_Unmount("/mnt/myDrive") != 0) {
-                /*Disku nevar?ja atvienot. */
+                /*Disku nevareja atvienot. */
 
                 appData.state = APP_STATE_ERROR;
             } else {
-                /* Diska atvieno?ana ir sekm?ga */
+                /* Diska atvienosana ir sekmiga */
                 appData.state = APP_STATE_WAIT_FOR_DEVICE_ATTACH;
 
             }
